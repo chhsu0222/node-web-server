@@ -3,6 +3,7 @@ const hbs = require('hbs');
 
 var app = express(); // create a new express app
 
+hbs.registerPartials(__dirname + '/views/partials');
 /*
 Using hbs as the default view engine.
 This will render .hbs files when res.render is called.
@@ -22,13 +23,23 @@ serves static assets such as HTML files, images, and so on.
 
 app.use(express.static(__dirname + '/public'));
 
+// 1st argument: name; 2nd one: function
+hbs.registerHelper('getCurrentYear', () => {
+  return new Date().getFullYear();
+});
+
+// e.g. {{screamIt welcomeMessage}}
+hbs.registerHelper('screamIt', (text) => {
+  return text.toUpperCase();
+});
+
+
 // setup HTTP route handlers (for HTTP 'GET' request)
 // 1st argument is URL
 // 2nd one is a function
 app.get('/', (req, res) => {
   res.render('home.hbs', {
     pageTitle: 'Home page',
-    currentYear: new Date().getFullYear(),
     welcomeMessage: 'Welcome to my website'
   });
 });
@@ -36,8 +47,7 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
   // The 2nd argument is the data we want to inject into templates
   res.render('about.hbs', {
-    pageTitle: 'About page',
-    currentYear: new Date().getFullYear()
+    pageTitle: 'About page'
   });
 });
 
