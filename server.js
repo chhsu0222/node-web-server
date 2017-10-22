@@ -1,6 +1,16 @@
 const express = require('express');
+const hbs = require('hbs');
 
 var app = express(); // create a new express app
+
+/*
+Using hbs as the default view engine.
+This will render .hbs files when res.render is called.
+*/
+app.set('view engine', 'hbs');
+/*
+views is the default directory that Express uses for your templates
+*/
 
 /*
 Bind application-level middleware to
@@ -16,20 +26,19 @@ app.use(express.static(__dirname + '/public'));
 // 1st argument is URL
 // 2nd one is a function
 app.get('/', (req, res) => {
-  // respond to the request sending some data back
-  res.send({
-    // The content type would be JSON if we send an object back
-    name: 'CH',
-    like: [
-      'Biking',
-      'Cities'
-    ]
+  res.render('home.hbs', {
+    pageTitle: 'Home page',
+    currentYear: new Date().getFullYear(),
+    welcomeMessage: 'Welcome to my website'
   });
 });
 
 app.get('/about', (req, res) => {
-  // Express automatically sets the content type to HTML
-  res.send('<h1>About page</h1>');
+  // The 2nd argument is the data we want to inject into templates
+  res.render('about.hbs', {
+    pageTitle: 'About page',
+    currentYear: new Date().getFullYear()
+  });
 });
 
 app.get('/bad', (req, res) => {
