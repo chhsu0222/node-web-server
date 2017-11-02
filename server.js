@@ -77,6 +77,13 @@ app.get('/project', (req, res) => {
   });
 });
 
+app.get('/new', (req, res) => {
+  res.render('new.hbs', {
+    pageTitle: 'Newest page',
+    message: 'How do you feel?'
+  });
+});
+
 app.get('/bad', (req, res) => {
   res.send({
     errorMessage: 'Unable to handle the request'
